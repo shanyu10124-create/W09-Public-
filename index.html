@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FORGE 鍛造健身工作室 | 專業健身與飲食管理</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            accent: '#84cc16',
+                            orange: '#f97316'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar & glassmorphism styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #4ade80 0%, #a3e635 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-orange {
+            background: linear-gradient(135deg, #f97316 0%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
+
+    <!-- Toast Notification Container -->
+    <div id="toast" class="fixed top-20 right-5 z-50 transform translate-x-full transition-transform duration-300 ease-in-out bg-slate-800 border border-brand-500 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center space-x-3 pointer-events-none">
+        <svg class="w-6 h-6 text-brand-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        <span id="toast-message" class="text-sm font-medium">訊息提示</span>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 glass-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Studio Brand Logo -->
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="w-11 h-11 bg-gradient-to-tr from-brand-600 to-brand-accent rounded-xl flex items-center justify-center shadow-lg shadow-brand-500/20 group-hover:scale-105 transition-transform">
+                    <svg class="w-6 h-6 text-slate-950 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <div>
+                    <span class="text-xl font-black tracking-wider text-white block leading-tight">FORGE <span class="text-brand-400">鍛造健身</span></span>
+                    <span class="text-xs text-slate-400 font-mono tracking-widest block">FITNESS STUDIO</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+                <a href="#info" class="hover:text-brand-400 transition-colors">工作室資訊</a>
+                <a href="#bmi-calc" class="hover:text-brand-400 transition-colors">BMI計算機</a>
+                <a href="#education" class="hover:text-brand-400 transition-colors">衛教知識</a>
+                <a href="#pricing" class="hover:text-brand-400 transition-colors">方案價目表</a>
+                <a href="#nutrition-demo" class="hover:text-brand-400 transition-colors">三餐追蹤試用</a>
+            </nav>
+
+            <!-- Quick Call Contact CTA -->
+            <div class="hidden sm:flex items-center space-x-4">
+                <a href="tel:0912345456" class="flex items-center space-x-2 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 px-4 py-2.5 rounded-xl text-sm font-semibold text-brand-400 hover:text-brand-300 transition-all">
+                    <svg class="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                    <span>0912-345-456</span>
+                </a>
+                <a href="#pricing" class="bg-gradient-to-r from-brand-500 to-brand-accent hover:opacity-90 text-slate-950 font-bold text-sm px-5 py-2.5 rounded-xl shadow-lg shadow-brand-500/25 transition-all">
+                    預約體驗
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white p-2">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-2 pb-6 space-y-3">
+            <a href="#info" class="block py-2 text-slate-300 hover:text-brand-400">工作室資訊與地址</a>
+            <a href="#bmi-calc" class="block py-2 text-slate-300 hover:text-brand-400">BMI 測量計算器</a>
+            <a href="#education" class="block py-2 text-slate-300 hover:text-brand-400">BMI 衛教知識</a>
+            <a href="#pricing" class="block py-2 text-slate-300 hover:text-brand-400">方案價目表</a>
+            <a href="#nutrition-demo" class="block py-2 text-slate-300 hover:text-brand-400">每日三餐營養追蹤</a>
+            <div class="pt-2 border-t border-slate-800 flex flex-col space-y-2">
+                <a href="tel:0912345456" class="flex items-center justify-center space-x-2 bg-slate-800 py-2.5 rounded-xl text-brand-400 font-bold">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                    <span>電話撥打：0912-345-456</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow">
+
+        <!-- Hero Section -->
+        <section class="relative py-16 md:py-24 overflow-hidden border-b border-slate-800/80">
+            <!-- Background glow effect -->
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center max-w-3xl mx-auto">
+                    <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-xs sm:text-sm font-semibold mb-6">
+                        <span class="w-2 h-2 rounded-full bg-brand-400 animate-pulse"></span>
+                        <span>科學健身 x 每日三餐營養專屬追蹤</span>
+                    </div>
+                    <h1 class1="text-4xl sm:text-6xl font-black text-white tracking-tight leading-tight mb-6">
+                        重塑體態，從<span class="text-gradient">精準數據</span>開始
+                    </h1>
+                    <p class="text-slate-400 text-base sm:text-lg mb-8 leading-relaxed">
+                        提供專業一對一健身指導、精準 BMI 體態檢測，配合國家級營養團隊<strong class="text-slate-200">每日三餐線上拍照審查與追蹤</strong>，帶你安全有效打造理想身型。
+                    </p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <a href="#bmi-calc" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-brand-500 to-brand-accent hover:opacity-90 text-slate-950 font-bold rounded-xl shadow-xl shadow-brand-500/20 transition-all flex items-center justify-center space-x-2">
+                            <span>免費進行 BMI 檢測</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </a>
+                        <a href="#pricing" class="w-full sm:w-auto px-8 py-4 bg-slate-900 hover:bg-slate-800 text-slate-200 font-semibold rounded-xl border border-slate-700 transition-all flex items-center justify-center space-x-2">
+                            <span>查看包半個月/1年/3年方案</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ITEM ①: Studio Info Section (健身工作室/電話/地址) -->
+        <section id="info" class="py-16 bg-slate-900/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-xs font-mono tracking-widest text-brand-400 uppercase mb-2">ABOUT OUR STUDIO</h2>
+                    <h3 class="text-3xl font-extrabold text-white">① 工作室資訊與聯絡據點</h3>
+                    <p class="text-slate-400 text-sm mt-2">歡迎親臨現場參觀試用，或直接電話聯繫專業教練顧問</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Phone Card -->
+                    <div class="glass-card p-6 rounded-2xl flex flex-col justify-between hover:border-brand-500/40 transition-all">
+                        <div>
+                            <div class="w-12 h-12 bg-brand-500/10 rounded-xl flex items-center justify-center text-brand-400 mb-4">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-1">官方諮詢電話</h4>
+                            <p class="text-slate-400 text-sm mb-4">專人解答課程諮詢與預約檢測</p>
+                            <p class="text-2xl font-black text-brand-400 font-mono">0912-345-456</p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-800">
+                            <a href="tel:0912345456" class="w-full py-2.5 bg-brand-500/10 hover:bg-brand-500 text-brand-400 hover:text-slate-950 font-bold rounded-lg text-sm transition-all flex items-center justify-center space-x-2">
+                                <span>立即撥打電話</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Address Card -->
+                    <div class="glass-card p-6 rounded-2xl flex flex-col justify-between hover:border-brand-500/40 transition-all">
+                        <div>
+                            <div class="w-12 h-12 bg-brand-500/10 rounded-xl flex items-center justify-center text-brand-400 mb-4">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-1">工作室旗艦店地址</h4>
+                            <p class="text-slate-400 text-sm mb-4">捷運站出口步行 3 分鐘即達</p>
+                            <p class="text-base font-semibold text-slate-200">台北市信義區健身路 88 號 2 樓</p>
+                            <p class="text-xs text-slate-400 mt-1">（捷運市政府站 3 號出口，台北 101 旁）</p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-800">
+                            <button onclick="copyAddress()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-lg text-sm transition-all flex items-center justify-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                                <span>複製完整地址</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Opening Hours Card -->
+                    <div class="glass-card p-6 rounded-2xl flex flex-col justify-between hover:border-brand-500/40 transition-all">
+                        <div>
+                            <div class="w-12 h-12 bg-brand-500/10 rounded-xl flex items-center justify-center text-brand-400 mb-4">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-1">營業時間與服務內容</h4>
+                            <p class="text-slate-400 text-sm mb-4">全年無休，教練課預約制</p>
+                            <div class="space-y-1 text-sm text-slate-300">
+                                <div class="flex justify-between"><span>週一至週五：</span><span class="text-white font-mono">07:00 - 23:00</span></div>
+                                <div class="flex justify-between"><span>週六至週日：</span><span class="text-white font-mono">08:00 - 22:00</span></div>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-800">
+                            <div class="flex items-center space-x-2 text-xs text-brand-400 font-semibold">
+                                <span class="w-2 h-2 rounded-full bg-brand-400 animate-ping"></span>
+                                <span>備有免費 InBody 體脂分析儀與洗沐設備</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ITEM ②: BMI Calculator Section (能輸身高體重後，計算出BMI值) -->
+        <section id="bmi-calc" class="py-16 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-xs font-mono tracking-widest text-brand-400 uppercase mb-2">INTERACTIVE TOOL</h2>
+                    <h3 class="text-3xl font-extrabold text-white">② 智能 BMI 身體質量指數計算機</h3>
+                    <p class="text-slate-400 text-sm mt-2">請輸入您的身高與體重，系統將即時計算出您的 BMI 數值與建議體重區間</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    <!-- Calculator Controls -->
+                    <div class="lg:col-span-6 glass-card p-6 sm:p-8 rounded-3xl">
+                        <form id="bmi-form" onsubmit="event.preventDefault();" class="space-y-6">
+                            <!-- Gender selection optional -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">生理性別</label>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <button type="button" onclick="setGender('male')" id="gender-male" class="py-3 px-4 rounded-xl border border-brand-500 bg-brand-500/20 text-white font-bold text-sm flex items-center justify-center space-x-2 transition-all">
+                                        <span>男性</span>
+                                    </button>
+                                    <button type="button" onclick="setGender('female')" id="gender-female" class="py-3 px-4 rounded-xl border border-slate-700 bg-slate-800 text-slate-400 font-bold text-sm flex items-center justify-center space-x-2 transition-all">
+                                        <span>女性</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Height Slider & Input -->
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <label for="height" class="text-sm font-bold text-slate-200">身高 (cm)</label>
+                                    <span id="height-val-display" class="text-lg font-black text-brand-400 font-mono">175 cm</span>
+                                </div>
+                                <input type="range" id="height-slider" min="120" max="220" value="175" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-brand-500" oninput="updateHeightFromSlider(this.value)">
+                                <div class="mt-2">
+                                    <input type="number" id="height-input" value="175" min="50" max="250" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-white font-mono text-sm focus:border-brand-500 focus:outline-none" oninput="updateHeightFromInput(this.value)">
+                                </div>
+                            </div>
+
+                            <!-- Weight Slider & Input -->
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <label for="weight" class="text-sm font-bold text-slate-200">體重 (kg)</label>
+                                    <span id="weight-val-display" class="text-lg font-black text-brand-400 font-mono">70 kg</span>
+                                </div>
+                                <input type="range" id="weight-slider" min="30" max="180" value="70" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-brand-500" oninput="updateWeightFromSlider(this.value)">
+                                <div class="mt-2">
+                                    <input type="number" id="weight-input" value="70" min="20" max="300" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-white font-mono text-sm focus:border-brand-500 focus:outline-none" oninput="updateWeightFromInput(this.value)">
+                                </div>
+                            </div>
+
+                            <button type="button" onclick="calculateBMI()" class="w-full py-4 bg-gradient-to-r from-brand-500 to-brand-accent hover:opacity-90 text-slate-950 font-black rounded-xl shadow-lg shadow-brand-500/20 text-base transition-all">
+                                重新整理並試算數據
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- BMI Output Card -->
+                    <div class="lg:col-span-6 glass-card p-6 sm:p-8 rounded-3xl flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-6">
+                                <div>
+                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">計算結果發佈</span>
+                                    <h4 class="text-2xl font-black text-white">您的 BMI 指數分析</h4>
+                                </div>
+                                <div id="bmi-status-badge" class="px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-brand-500/20 text-brand-400 border border-brand-500/30">
+                                    標準範圍 (Normal)
+                                </div>
+                            </div>
+
+                            <!-- Big Score Display -->
+                            <div class="text-center py-6 bg-slate-900/80 rounded-2xl border border-slate-800 mb-6">
+                                <span id="bmi-value" class="text-6xl sm:text-7xl font-black text-gradient font-mono tracking-tight">22.9</span>
+                                <p class="text-xs text-slate-400 mt-2 font-mono">kg/m² (體重 / 身高公尺平方)</p>
+                            </div>
+
+                            <!-- Visual Scale Meter -->
+                            <div class="space-y-2 mb-6">
+                                <div class="flex justify-between text-xs font-semibold text-slate-400">
+                                    <span>過輕 (&lt;18.5)</span>
+                                    <span>正常 (18.5-24)</span>
+                                    <span>過重 (24-27)</span>
+                                    <span>肥胖 (&gt;27)</span>
+                                </div>
+                                <div class="h-3 w-full bg-slate-800 rounded-full overflow-hidden flex relative">
+                                    <div class="w-[20%] bg-sky-500/80"></div>
+                                    <div class="w-[30%] bg-emerald-500"></div>
+                                    <div class="w-[20%] bg-amber-500"></div>
+                                    <div class="w-[30%] bg-rose-500"></div>
+                                    <!-- Marker Pin -->
+                                    <div id="bmi-pointer" class="absolute top-0 bottom-0 w-1.5 bg-white shadow-md shadow-white rounded-full transition-all duration-300" style="left: 45%;"></div>
+                                </div>
+                            </div>
+
+                            <!-- Analysis & Ideal Range -->
+                            <div class="space-y-3 bg-slate-900/50 p-4 rounded-xl border border-slate-800/80 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">您的理想標準體重區間：</span>
+                                    <span id="ideal-weight-range" class="font-bold text-slate-200 font-mono">56.7 kg - 73.5 kg</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">基礎代謝率 (BMR 粗估)：</span>
+                                    <span id="bmr-estimate" class="font-bold text-brand-400 font-mono">~ 1,650 kcal/日</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="bmi-recommendation" class="mt-6 p-4 rounded-xl bg-slate-800/60 border border-slate-700 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                            💡 <strong>專業建議：</strong> 您的 BMI 處於極佳的健康標準範圍！建議結合重量訓練提升肌肉量，並搭配「每日三餐營養追蹤」方案保持精準三大營養素攝取。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ITEM ③: BMI Health Education Section (衛教，衛教BMI的知識與對身體的影響) -->
+        <section id="education" class="py-16 bg-slate-900/50 border-t border-b border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-xs font-mono tracking-widest text-brand-400 uppercase mb-2">HEALTH KNOWLEDGE</h2>
+                    <h3 class="text-3xl font-extrabold text-white">③ BMI 衛教知識與身體影響</h3>
+                    <p class="text-slate-400 text-sm mt-2">瞭解身體質量指數的意義、限制以及對整體健康的長遠影響</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Edu Card 1 -->
+                    <div class="glass-card p-6 rounded-2xl border-t-2 border-t-brand-400 flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-lg bg-brand-500/10 text-brand-400 flex items-center justify-center font-bold font-mono mb-4">01</div>
+                            <h4 class="text-lg font-bold text-white mb-2">什麼是 BMI 指數？</h4>
+                            <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                                BMI（Body Mass Index，身體質量指數）是世界衛生組織 (WHO) 評估個人體重是否適中、過輕或肥胖的最常用國際指標。
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-800 text-xs text-brand-400 font-mono">
+                            計算公式：體重(kg) / 身高²(m²)
+                        </div>
+                    </div>
+
+                    <!-- Edu Card 2 -->
+                    <div class="glass-card p-6 rounded-2xl border-t-2 border-t-amber-400 flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold font-mono mb-4">02</div>
+                            <h4 class="text-lg font-bold text-white mb-2">BMI 的限制與盲點</h4>
+                            <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                                BMI 無法區分「肌肉量」與「體脂肪」。長年重訓高肌肉量的運動員 BMI 可能顯示過重，但體脂極低；而「泡芙人」BMI 正常但體脂卻超標。
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-800 text-xs text-amber-400 font-mono">
+                            建議搭配 InBody 體脂率評估
+                        </div>
+                    </div>
+
+                    <!-- Edu Card 3 -->
+                    <div class="glass-card p-6 rounded-2xl border-t-2 border-t-rose-400 flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-lg bg-rose-500/10 text-rose-400 flex items-center justify-center font-bold font-mono mb-4">03</div>
+                            <h4 class="text-lg font-bold text-white mb-2">BMI 異常對身體的影響</h4>
+                            <ul class="text-slate-400 text-xs sm:text-sm space-y-1.5 list-disc list-inside">
+                               "><strong class="text-rose-400">BMI過高：</strong>增加心血管疾病、二型糖尿病、脂肪肝、關節負擔過重風險。</li>
+                               "><strong class="text-sky-400">BMI過低：</strong>免疫力下降、骨質疏鬆、肌肉萎縮及營養不良。</li>
+                            </ul>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-800 text-xs text-rose-400 font-mono">
+                            預防慢性病的關鍵指標
+                        </div>
+                    </div>
+
+                    <!-- Edu Card 4 -->
+                    <div class="glass-card p-6 rounded-2xl border-t-2 border-t-emerald-400 flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold font-mono mb-4">04</div>
+                            <h4 class="text-lg font-bold text-white mb-2">如何改善與維持？</h4>
+                            <p class="text-slate-400 text-xs sm:text-sm leading-relaxed mb-2">
+                                單純節食易流失肌肉！最佳策略為：
+                            </p>
+                            <p class="text-slate-300 text-xs leading-relaxed">
+                                1. 規律阻力訓練（增加基礎代謝）<br>
+                                2. 每日三餐均衡營養追蹤（維持足夠蛋白質與控制總熱量）
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-800 text-xs text-emerald-400 font-mono">
+                            運動 + 飲食 雙管齊下
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Health Advice Accordion / Extra info -->
+                <div class="mt-10 glass-card p-6 sm:p-8 rounded-2xl">
+                    <h4 class="text-xl font-bold text-white mb-4 flex items-center space-x-2">
+                        <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span>台灣衛福部 (MoHW) 成人 BMI 評定標準一覽表</span>
+                    </h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs sm:text-sm text-slate-300">
+                            <thead class="bg-slate-900/80 text-brand-400 font-mono border-b border-slate-800">
+                                <tr>
+                                    <th class="p-3">身體分類</th>
+                                    <th class="p-3">BMI 範圍 (kg/m²)</th>
+                                    <th class="p-3">健康風險程度</th>
+                                    <th class="p-3">FORGE 工作室建議課程方向</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800">
+                                <tr class="hover:bg-slate-800/40">
+                                    <td class="p-3 text-sky-400 font-bold">體重過輕</td>
+                                    <td class="p-3 font-mono">&lt; 18.5</td>
+                                    <td class="p-3">營養不良、免疫力差、肌少症風險</td>
+                                    <td class="p-3">肌力增肌訓練 + 高蛋白熱量盈餘營養指導</td>
+                                </tr>
+                                <tr class="hover:bg-slate-800/40">
+                                    <td class="p-3 text-emerald-400 font-bold">健康正常範圍</td>
+                                    <td class="p-3 font-mono">18.5 ≤ BMI &lt; 24.0</td>
+                                    <td class="p-3">疾病風險最低，理想身體狀態</td>
+                                    <td class="p-3">體態雕塑、肌力提升與體能維持</td>
+                                </tr>
+                                <tr class="hover:bg-slate-800/40">
+                                    <td class="p-3 text-amber-400 font-bold">體重過重 (過重)</td>
+                                    <td class="p-3 font-mono">24.0 ≤ BMI &lt; 27.0</td>
+                                    <td class="p-3">輕度心血管與代謝負擔增加</td>
+                                    <td class="p-3">減脂增肌訓練 + 每日三餐精準三大熱量赤字控制</td>
+                                </tr>
+                                <tr class="hover:bg-slate-800/40">
+                                    <td class="p-3 text-rose-500 font-bold">肥胖 (輕度/中度/重度)</td>
+                                    <td class="p-3 font-mono">≥ 27.0</td>
+                                    <td class="p-3">高血壓、糖尿病、高血脂高風險群</td>
+                                    <td class="p-3">安全減重防運動傷害 + 專屬營養師全程照護</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ITEM ④: Pricing Table & Plan Estimator (價目表，計算包半個月、一年、三年，追蹤每日三餐營養) -->
+        <section id="pricing" class="py-16 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-xs font-mono tracking-widest text-brand-400 uppercase mb-2">MEMBERSHIP PRICING</h2>
+                    <h3 class="text-3xl font-extrabold text-white">④ 方案價目表與費用試算</h3>
+                    <p class="text-slate-400 text-sm mt-2">包含「半個月體驗」、「一年卡」、「三年卡」方案，所有方案皆包含或可加購「每日三餐營養專屬追蹤」</p>
+                </div>
+
+                <!-- 3 Core Plan Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                    
+                    <!-- Plan 1: 0.5 Month -->
+                    <div class="glass-card p-8 rounded-3xl border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition-all relative">
+                        <div>
+                            <div class="inline-block px-3 py-1 bg-slate-800 text-slate-300 rounded-full text-xs font-bold mb-4">新手短天期試用</div>
+                            <h4 class="text-2xl font-black text-white mb-2">包半個月體驗方案</h4>
+                            <p class="text-slate-400 text-xs mb-6">適合短期試用、無合約負擔，快速檢測自我運動習慣</p>
+                            
+                            <div class="mb-6">
+                                <span class="text-4xl font-black text-white font-mono">NT$ 1,280</span>
+                                <span class="text-slate-400 text-xs"> / 15天</span>
+                            </div>
+
+                            <ul class="space-y-3 text-xs sm:text-sm text-slate-300 mb-8">
+                                <li class="flex items-center space-x-2">
+                                    <svg class="w-4 h-4 text-brand-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    <span>無限制自主訓練入場使用 (15天)</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <svg class="w-4 h-4 text-brand-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    <span>免費專業 InBody 檢測 1 次</span>
+                                </li>
+                                <li class="flex items-center space-x-2 text-brand-400 font-bold">
+                                    <svg class="w-4 h-4 text-brand-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    <span>含 7 天「每日三餐線上營養追蹤」</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <button onclick="selectPlanInCalculator('half_month')" class="w-full py-3 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl text-sm transition-all">
+                            選擇半個月體驗試算
+                        </button>
+                    </div>
+
+                    <!-- Plan 2: 1 Year (Popular) -->
+                    <div class="glass-card p-8 rounded-3xl border-2 border-brand-500 flex flex-col justify-between shadow-xl shadow-brand-500/10 relative transform scale-105 z-10">
+                        <div class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-brand-500 to-brand-accent text-slate-950 font-black text-xs rounded-full uppercase tracking-wider">
+                            🔥 最受歡迎推薦
+                        </div>
+                        <div>
+                            <div class="inline-block px-3 py-1 bg-brand-500/20 text-brand-400 rounded-full text-xs font-bold mb-4 mt-2">年度體態突破</div>
+                            <h4 class="text-2xl font-black text-white mb-2">包一年專業精英方案</h4>
+                            <p class="text-slate-400 text-xs mb-6">打造持續運動習慣，專屬教練與營養師長期陪伴指導</p>
+                            
+                            <div class="mb-6">
+                                <span class="text-4xl font-black text-brand-400 font-mono">NT$ 1,200</span>
+                                <span class="text-slate-400 text-xs"> / 月 (年繳 NT$ 14,400)</span>
+                            </div>
+
+                            <ul class="space-y-3 text-xs sm:text-sm text-slate-300 mb-8">
+                                <li class="flex items-center space-x-2">
+                                    <svg class="w-4 h-4 text-brand-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    <span>365天全時段場館自由進出訓練</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <svg class="w-4 h-4 text-brand-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    <span>每月免費 InBody 數據檢測與追蹤</span>
+                                </li>
+                                <li class="flex items-center space-x-2 text-brand-400 font-bold">
+                                    <svg class="w-4 h-4 text-brand-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    <span>包含「每日三餐營養照片追蹤指導」</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <svg class="w-4 h-4 text-brand-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    <span>贈送 2 堂一對一私人教練課程</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <button onclick="selectPlanInCalculator('one_year')" class="w-full py-3 bg-gradient-to-r from-brand-500 to-brand-accent hover:opacity-90 text-slate-950 font-black rounded-xl text-sm shadow-lg shadow-brand-500/20 transition-all">
+                            選擇一年方案試算
+                        </button>
+                    </div>
+
+                    <!-- Plan 3: 3 Years -->
+                    <div class="glass-card p-8 rounded-3xl border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition-all relative">
+                        <div>
+                            <div class="inline-block px-3 py-1 bg-slate-800 text-amber-400 rounded-full text-xs font-bold mb-4">超值長青尊榮</div>
+                            <h4 class="text-2xl font-black text-white mb-2">包三年極致尊榮方案</h4>
+                            <p class="text-slate-400 text-xs mb-6">單月平均費用最低！享受極致優惠與 VIP 尊榮福利</p>
+                            
+                            <div class="mb-6">
+                                <span class="text-4xl font-black text-amber-400 font-mono">NT$ 880</span>
+                                <span class="text-slate-400 text-xs"> / 月 (三年總計 NT$ 31,680)</span>
+                            </div>
+
+                            <ul class="space-y-3 text-xs sm:text-sm text-slate-300 mb-8">
+                                <li class="flex items-center space-x-2">
+                                    <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    <span>3 年無限制入場自主訓練</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    <span>無限次 InBody 體脂檢測諮詢</span>
+                                </li>
+                                <li class="flex items-center space-x-2 text-amber-400 font-bold">
+                                    <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    <span>全期包含「每日三餐精準營養師審查」</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    <span>贈送 6 堂一對一私人教練課程</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <button onclick="selectPlanInCalculator('three_years')" class="w-full py-3 bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold rounded-xl text-sm transition-all">
+                            選擇三年方案試算
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Interactive Custom Cost Estimator Calculator -->
+                <div class="glass-card p-6 sm:p-10 rounded-3xl border border-slate-800 max-w-4xl mx-auto">
+                    <div class="text-center mb-8">
+                        <span class="px-3 py-1 bg-brand-500/10 text-brand-400 font-mono text-xs rounded-full font-bold">INTERACTIVE PRICING CALCULATOR</span>
+                        <h4 class="text-2xl font-black text-white mt-2">互動式會籍與營養追蹤試算器</h4>
+                        <p class="text-slate-400 text-xs sm:text-sm mt-1">自訂您的運動會籍長度與加購項目，試算總金額與平均日消費</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <!-- Options Controls -->
+                        <div class="space-y-6">
+                            <!-- Duration Selector -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">1. 選擇包會籍天數/期程</label>
+                                <select id="calc-duration" onchange="recalculateTotalCost()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white font-semibold text-sm focus:border-brand-500 focus:outline-none">
+                                    <option value="half_month">半個月體驗卡 (15天) - NT$1,280</option>
+                                    <option value="one_year" selected>一年卡 (12個月) - NT$1,200/月 (總價 $14,400)</option>
+                                    <option value="three_years">三年卡 (36個月) - NT$880/月 (總價 $31,680)</option>
+                                </select>
+                            </div>
+
+                            <!-- Nutrition Addon Toggle -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">2. 追蹤每日三餐營養服務</label>
+                                <div class="bg-slate-900 border border-slate-700 p-4 rounded-xl flex items-center justify-between">
+                                    <div>
+                                        <div class="font-bold text-white text-sm">專屬營養師每日線上對話與三餐審核</div>
+                                        <div class="text-xs text-slate-400">上傳三餐照片，計算蛋白質/熱量赤字</div>
+                                    </div>
+                                    <input type="checkbox" id="calc-nutrition" checked onchange="recalculateTotalCost()" class="w-5 h-5 accent-brand-500 rounded cursor-pointer">
+                                </div>
+                            </div>
+
+                            <!-- One-on-one PT Lessons Addon -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">3. 加購一對一私人教練課 (單堂 $1,500優惠價)</label>
+                                <div class="flex items-center space-x-4">
+                                    <button type="button" onclick="changePTCount(-1)" class="w-10 h-10 bg-slate-800 hover:bg-slate-700 rounded-xl text-white font-bold text-lg flex items-center justify-center">-</button>
+                                    <span id="pt-count-display" class="font-mono text-xl font-bold text-brand-400 w-12 text-center">2</span>
+                                    <span class="text-xs text-slate-400">堂教練課</span>
+                                    <button type="button" onclick="changePTCount(1)" class="w-10 h-10 bg-slate-800 hover:bg-slate-700 rounded-xl text-white font-bold text-lg flex items-center justify-center">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Calculation Output -->
+                        <div class="bg-slate-900/90 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between h-full">
+                            <div>
+                                <h5 class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider mb-4">費用總計與明細摘要</h5>
+                                
+                                <div class="space-y-3 text-sm text-slate-300 border-b border-slate-800 pb-4 mb-4">
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">主會籍費用：</span>
+                                        <span id="summary-membership-cost" class="font-mono font-bold text-white">NT$ 14,400</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">三餐營養追蹤對策：</span>
+                                        <span id="summary-nutrition-cost" class="font-mono font-bold text-brand-400">已包含 (FREE)</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">加購私人教練課：</span>
+                                        <span id="summary-pt-cost" class="font-mono font-bold text-white">NT$ 3,000 (2堂)</span>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <span class="text-xs text-slate-400 block mb-1">估計應付總金額</span>
+                                    <div id="summary-grand-total" class="text-4xl font-black text-gradient font-mono">
+                                        NT$ 17,400
+                                    </div>
+                                </div>
+
+                                <div class="p-3 bg-brand-500/10 rounded-xl border border-brand-500/20 text-xs text-brand-300">
+                                    ⚡ 相當於每天僅需約 <strong id="summary-daily-cost" class="font-mono text-white text-sm">NT$ 47.6</strong> 元，即享完整健身運動與三餐飲食管理！
+                                </div>
+                            </div>
+
+                            <button onclick="triggerReservationModal()" class="w-full mt-6 py-3.5 bg-gradient-to-r from-brand-500 to-brand-accent hover:opacity-90 text-slate-950 font-black rounded-xl shadow-lg transition-all text-sm">
+                                帶入此試算結果，預約專人聯繫
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ITEM BONUS/FEATURE: Interactive 3-Meal Nutrition Tracker Preview (追蹤每日三餐營養 互動試用) -->
+        <section id="nutrition-demo" class="py-16 bg-slate-900/40 border-t border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-xs font-mono tracking-widest text-brand-400 uppercase mb-2">LIVE DEMO FEATURE</h2>
+                    <h3 class="text-3xl font-extrabold text-white">「每日三餐營養追蹤」功能互動體驗</h3>
+                    <p class="text-slate-400 text-sm mt-2">模擬我們的專屬 App 服務：輸入或點選您今日的三餐，自動計算熱量與三大營養素，教練團隊線上給予建議</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Meal Logger Inputs -->
+                    <div class="lg:col-span-7 glass-card p-6 sm:p-8 rounded-3xl space-y-6">
+                        <h4 class="text-lg font-bold text-white flex items-center space-x-2">
+                            <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 62v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.25v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.25m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.25v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.25"/></svg>
+                            <span>今日三餐飲食模擬記錄</span>
+                        </h4>
+
+                        <!-- Breakfast Input -->
+                        <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-sm font-bold text-brand-400">🍳 早餐 Breakfast</label>
+                                <span class="text-xs text-slate-400">熱量粗估</span>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <button type="button" onclick="setMeal('breakfast', '無糖豆漿 + 2顆蒸蛋', 280, 24, 10, 15)" class="text-left p-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs text-slate-200 transition-all border border-slate-700">
+                                    <div class="font-bold">健康高蛋白套餐</div>
+                                    <div class="text-[10px] text-slate-400">280 kcal | P:24g</div>
+                                </button>
+                                <button type="button" onclick="setMeal('breakfast', '培根蛋餅 + 中杯奶茶', 520, 14, 55, 28)" class="text-left p-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs text-slate-200 transition-all border border-slate-700">
+                                    <div class="font-bold">傳統台式早餐</div>
+                                    <div class="text-[10px] text-slate-400">520 kcal | P:14g</div>
+                                </button>
+                                <button type="button" onclick="setMeal('breakfast', '燕麥奶 + 綜合堅果半把', 310, 8, 42, 12)" class="text-left p-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs text-slate-200 transition-all border border-slate-700">
+                                    <div class="font-bold">輕食燕麥餐</div>
+                                    <div class="text-[10px] text-slate-400">310 kcal | P:8g</div>
+                                </button>
+                            </div>
+                            <div id="breakfast-selected" class="mt-2 text-xs font-mono text-slate-300 italic">已選擇：無糖豆漿 + 2顆蒸蛋</div>
+                        </div>
+
+                        <!-- Lunch Input -->
+                        <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-sm font-bold text-amber-400">🍱 午餐 Lunch</label>
+                                <span class="text-xs text-slate-400">熱量粗估</span>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <button type="button" onclick="setMeal('lunch', '健康舒肥雞胸肉便當', 550, 42, 60, 12)" class="text-left p-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs text-slate-200 transition-all border border-slate-700">
+                                    <div class="font-bold">健身專用雞胸便當</div>
+                                    <div class="text-[10px] text-slate-400">550 kcal | P:42g</div>
+                                </button>
+                                <button type="button" onclick="setMeal('lunch', '炸雞腿便當 + 湯', 880, 32, 95, 42)" class="text-left p-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs text-slate-200 transition-all border border-slate-700">
+                                    <div class="font-bold">外食炸雞腿便當</div>
+                                    <div class="text-[10px] text-slate-400">880 kcal | P:32g</div>
+                                </button>
+                                <button type="button" onclick="setMeal('lunch', '鮭魚藜麥沙拉盒', 460, 30, 35, 20)" class="text-left p-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs text-slate-200 transition-all border border-slate-700">
+                                    <div class="font-bold">鮭魚輕食沙拉</div>
+                                    <div class="text-[10px] text-slate-400">460 kcal | P:30g</div>
+                                </button>
+                            </div>
+                            <div id="lunch-selected" class="mt-2 text-xs font-mono text-slate-300 italic">已選擇：健康舒肥雞胸肉便當</div>
+                        </div>
+
+                        <!-- Dinner Input -->
+                        <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-sm font-bold text-rose-400">🥗 晚餐 Dinner</label>
+                                <span class="text-xs text-slate-400">熱量粗估</span>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <button type="button" onclick="setMeal('dinner', '烤牛肉片 + 大盤蔬菜 + 地瓜', 480, 38, 40, 14)" class="text-left p-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs text-slate-200 transition-all border border-slate-700">
+                                    <div class="font-bold">原型牛肉地瓜餐</div>
+                                    <div class="text-[10px] text-slate-400">480 kcal | P:38g</div>
+                                </button>
+                                <button type="button" onclick="setMeal('dinner', '牛肉火鍋 (清湯) + 菜盤', 620, 40, 30, 26)" class="text-left p-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs text-slate-200 transition-all border border-slate-700">
+                                    <div class="font-bold">低碳涮涮鍋</div>
+                                    <div class="text-[10px] text-slate-400">620 kcal | P:40g</div>
+                                </button>
+                                <button type="button" onclick="setMeal('dinner', '麻辣鍋 + 泡麵 + 珍奶', 1250, 25, 140, 65)" class="text-left p-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs text-slate-200 transition-all border border-slate-700">
+                                    <div class="font-bold">放縱麻辣夜宵</div>
+                                    <div class="text-[10px] text-slate-400">1,250 kcal | P:25g</div>
+                                </button>
+                            </div>
+                            <div id="dinner-selected" class="mt-2 text-xs font-mono text-slate-300 italic">已選擇：烤牛肉片 + 大盤蔬菜 + 地瓜</div>
+                        </div>
+                    </div>
+
+                    <!-- Macro Summary & Trainer Feedback Feedback Panel -->
+                    <div class="lg:col-span-5 glass-card p-6 sm:p-8 rounded-3xl flex flex-col justify-between space-y-6">
+                        <div>
+                            <div class="flex justify-between items-center mb-4">
+                                <h4 class="text-lg font-bold text-white">全日巨量營養素統計</h4>
+                                <span class="px-2.5 py-1 bg-brand-500/20 text-brand-400 text-xs font-mono rounded-full font-bold">AI 即時剖析</span>
+                            </div>
+
+                            <!-- Total Calorie Display -->
+                            <div class="p-4 bg-slate-900 rounded-2xl border border-slate-800 text-center mb-6">
+                                <span class="text-xs text-slate-400 block mb-1">總攝取熱量 (Estimated Total)</span>
+                                <span id="nutrition-total-calories" class="text-4xl font-black text-brand-400 font-mono">1,310</span>
+                                <span class="text-slate-400 text-sm"> kcal</span>
+                            </div>
+
+                            <!-- Macros Breakdown Bars -->
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between text-xs font-bold mb-1">
+                                        <span class="text-slate-300">蛋白質 (Protein)</span>
+                                        <span id="macro-p-val" class="text-brand-400 font-mono">104g</span>
+                                    </div>
+                                    <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+                                        <div id="macro-p-bar" class="h-full bg-brand-400 rounded-full transition-all duration-500" style="width: 70%;"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between text-xs font-bold mb-1">
+                                        <span class="text-slate-300">碳水化合物 (Carbs)</span>
+                                        <span id="macro-c-val" class="text-amber-400 font-mono">110g</span>
+                                    </div>
+                                    <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+                                        <div id="macro-c-bar" class="h-full bg-amber-400 rounded-full transition-all duration-500" style="width: 50%;"></div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between text-xs font-bold mb-1">
+                                        <span class="text-slate-300">脂肪 (Fats)</span>
+                                        <span id="macro-f-val" class="text-rose-400 font-mono">41g</span>
+                                    </div>
+                                    <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+                                        <div id="macro-f-bar" class="h-full bg-rose-400 rounded-full transition-all duration-500" style="width: 40%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Simulated Trainer Feedback Card -->
+                        <div class="p-4 bg-slate-900/90 rounded-2xl border border-brand-500/30">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <div class="w-8 h-8 rounded-full bg-brand-500 flex items-center justify-center font-bold text-slate-950 text-xs">TR</div>
+                                <div>
+                                    <div class="text-xs font-bold text-white">FORGE 首席營養師團隊審查評論</div>
+                                    <div class="text-[10px] text-slate-400">每晚 21:00 前給予回饋</div>
+                                </div>
+                            </div>
+                            <p id="trainer-feedback-text" class="text-xs text-slate-300 leading-relaxed font-sans">
+                                🌟 <strong>做得很好！</strong> 今日本日的蛋白質攝取非常充裕（已達 104g），有助於重訓後的肌肉修復。晚餐選擇原型食物也成功控制了油脂。繼續保持！
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Reservation Modal -->
+    <div id="reservation-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+        <div class="glass-card max-w-md w-full p-6 sm:p-8 rounded-3xl border border-slate-700 shadow-2xl relative">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-brand-500/20 text-brand-400 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                </div>
+                <h3 class="text-2xl font-black text-white">預約專人諮詢服務</h3>
+                <p class="text-xs text-slate-400 mt-1">填寫您的聯繫方式，顧問將於 24 小時內與您聯繫</p>
+            </div>
+
+            <form onsubmit="handleReservationSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">您的姓名 *</label>
+                    <input type="text" required placeholder="例如：陳大明" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm focus:border-brand-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">聯絡電話 *</label>
+                    <input type="tel" required placeholder="例如：0912-345-456" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm focus:border-brand-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">有興趣的方案</label>
+                    <input type="text" id="modal-selected-plan" readonly class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-brand-400 font-bold text-sm">
+                </div>
+
+                <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-brand-500 to-brand-accent hover:opacity-90 text-slate-950 font-black rounded-xl text-sm transition-all shadow-lg shadow-brand-500/20">
+                    送出預約申請
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Global Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800/80 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div class="md:col-span-2 space-y-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center font-black text-slate-950">F</div>
+                        <span class="text-xl font-black text-white">FORGE 鍛造健身工作室</span>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed max-w-sm">
+                        結合科學運動訓練、InBody身體組成檢測與國家級營養師「每日三餐營養追蹤」，帶您無痛打造健康永續的理想身材。
+                    </p>
+                </div>
+
+                <div>
+                    <h5 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-3">快速導覽</h5>
+                    <ul class="space-y-2 text-xs text-slate-400">
+                        <li><a href="#info" class="hover:text-brand-400">工作室據點與電話</a></li>
+                        <li><a href="#bmi-calc" class="hover:text-brand-400">BMI 指數線上測量</a></li>
+                        <li><a href="#education" class="hover:text-brand-400">BMI 衛教知識說明</a></li>
+                        <li><a href="#pricing" class="hover:text-brand-400">包半個月/1年/3年方案價目</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="text-xs font-bold text-slate-300 uppercase tracking-widest mb-3">聯絡資訊</h5>
+                    <ul class="space-y-2 text-xs text-slate-400">
+                        <li class="flex items-center space-x-2">
+                            <span class="text-brand-400 font-bold">電話：</span>
+                            <a href="tel:0912345456" class="hover:underline font-mono">0912-345-456</a>
+                        </li>
+                        <li><span class="text-brand-400 font-bold">地址：</span>台北市信義區健身路 88 號 2 樓</li>
+                        <li><span class="text-brand-400 font-bold">時間：</span>週一至週日 07:00 - 23:00</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-slate-900 text-center text-xs text-slate-500">
+                &copy; 2026 FORGE Fitness Studio. All rights reserved. 版權所有 鍛造健身工作室
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // State Management
+        let state = {
+            gender: 'male',
+            height: 175,
+            weight: 70,
+            bmi: 22.9,
+            ptCount: 2,
+            nutritionMeals: {
+                breakfast: { name: '無糖豆漿 + 2顆蒸蛋', cal: 280, p: 24, c: 10, f: 15 },
+                lunch: { name: '健康舒肥雞胸肉便當', cal: 550, p: 42, c: 60, f: 12 },
+                dinner: { name: '烤牛肉片 + 大盤蔬菜 + 地瓜', cal: 480, p: 38, c: 40, f: 14 }
+            }
+        };
+
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Toast Helper
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = msg;
+            toast.classList.remove('translate-x-full');
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+            }, 3000);
+        }
+
+        // Copy Address
+        function copyAddress() {
+            const addr = '台北市信義區健身路 88 號 2 樓';
+            const tempInput = document.createElement('input');
+            tempInput.value = addr;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast('已成功複製工作室地址！');
+        }
+
+        // Gender Selection
+        function setGender(g) {
+            state.gender = g;
+            const maleBtn = document.getElementById('gender-male');
+            const femaleBtn = document.getElementById('gender-female');
+            if (g === 'male') {
+                maleBtn.className = "py-3 px-4 rounded-xl border border-brand-500 bg-brand-500/20 text-white font-bold text-sm flex items-center justify-center space-x-2 transition-all";
+                femaleBtn.className = "py-3 px-4 rounded-xl border border-slate-700 bg-slate-800 text-slate-400 font-bold text-sm flex items-center justify-center space-x-2 transition-all";
+            } else {
+                femaleBtn.className = "py-3 px-4 rounded-xl border border-brand-500 bg-brand-500/20 text-white font-bold text-sm flex items-center justify-center space-x-2 transition-all";
+                maleBtn.className = "py-3 px-4 rounded-xl border border-slate-700 bg-slate-800 text-slate-400 font-bold text-sm flex items-center justify-center space-x-2 transition-all";
+            }
+            calculateBMI();
+        }
+
+        // Height inputs
+        function updateHeightFromSlider(val) {
+            state.height = parseFloat(val);
+            document.getElementById('height-val-display').innerText = val + ' cm';
+            document.getElementById('height-input').value = val;
+            calculateBMI();
+        }
+        function updateHeightFromInput(val) {
+            if(!val || val < 50) return;
+            state.height = parseFloat(val);
+            document.getElementById('height-val-display').innerText = val + ' cm';
+            document.getElementById('height-slider').value = val;
+            calculateBMI();
+        }
+
+        // Weight inputs
+        function updateWeightFromSlider(val) {
+            state.weight = parseFloat(val);
+            document.getElementById('weight-val-display').innerText = val + ' kg';
+            document.getElementById('weight-input').value = val;
+            calculateBMI();
+        }
+        function updateWeightFromInput(val) {
+            if(!val || val < 20) return;
+            state.weight = parseFloat(val);
+            document.getElementById('weight-val-display').innerText = val + ' kg';
+            document.getElementById('weight-slider').value = val;
+            calculateBMI();
+        }
+
+        // ITEM ②: BMI Calculation Algorithm
+        function calculateBMI() {
+            const hMeter = state.height / 100;
+            const bmi = state.weight / (hMeter * hMeter);
+            state.bmi = bmi.toFixed(1);
+
+            document.getElementById('bmi-value').innerText = state.bmi;
+
+            // Compute ideal weight range (18.5 ~ 23.9)
+            const minIdeal = (18.5 * hMeter * hMeter).toFixed(1);
+            const maxIdeal = (23.9 * hMeter * hMeter).toFixed(1);
+            document.getElementById('ideal-weight-range').innerText = `${minIdeal} kg - ${maxIdeal} kg`;
+
+            // Estimate BMR (Mifflin-St Jeor formula)
+            let bmr = (10 * state.weight) + (6.25 * state.height) - (5 * 28);
+            bmr = state.gender === 'male' ? bmr + 5 : bmr - 161;
+            document.getElementById('bmr-estimate').innerText = `~ ${Math.round(bmr)} kcal/日`;
+
+            // Status Badge & Pointer positioning
+            const badge = document.getElementById('bmi-status-badge');
+            const pointer = document.getElementById('bmi-pointer');
+            const rec = document.getElementById('bmi-recommendation');
+
+            // Pointer position logic (0% to 100% of scale: 15 ~ 35)
+            let percent = ((bmi - 15) / (35 - 15)) * 100;
+            if (percent < 2) percent = 2;
+            if (percent > 98) percent = 98;
+            pointer.style.left = percent + '%';
+
+            if (bmi < 18.5) {
+                badge.innerText = '體重過輕 (Underweight)';
+                badge.className = 'px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-sky-500/20 text-sky-400 border border-sky-500/30';
+                rec.innerHTML = '💡 <strong>衛教建議：</strong> 您的體重偏輕。建議提高每日優質蛋白質與總熱量攝取，並搭配負重重訓，促進肌肉肌肉合成而非脂肪堆積！';
+            } else if (bmi >= 18.5 && bmi < 24.0) {
+                badge.innerText = '標準範圍 (Normal)';
+                badge.className = 'px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+                rec.innerHTML = '💡 <strong>衛教建議：</strong> 您的 BMI 處於極佳的健康標準範圍！建議持續結合重量訓練提升肌肉質量，並搭配「每日三餐營養追蹤」方案維持精準體態。';
+            } else if (bmi >= 24.0 && bmi < 27.0) {
+                badge.innerText = '體重過重 (Overweight)';
+                badge.className = 'px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-amber-500/20 text-amber-400 border border-amber-500/30';
+                rec.innerHTML = '💡 <strong>衛教建議：</strong> 您的體重稍稍高於理想區間。建議安排有氧與重訓結合，並由我們的營養師透過「每日三餐線上追蹤」進行熱量赤字管理。';
+            } else {
+                badge.innerText = '肥胖等級 (Obesity)';
+                badge.className = 'px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-rose-500/20 text-rose-400 border border-rose-500/30';
+                rec.innerHTML = '💡 <strong>衛教建議：</strong> 您的體重可能增加關節與心血管負擔。建議預約 1對1 教練做安全防受傷運動，並搭配專屬營養師全天候三餐審核調整飲食。';
+            }
+        }
+
+        // ITEM ④: Interactive Cost Estimator Calculations
+        function changePTCount(delta) {
+            state.ptCount = Math.max(0, state.ptCount + delta);
+            document.getElementById('pt-count-display').innerText = state.ptCount;
+            recalculateTotalCost();
+        }
+
+        function selectPlanInCalculator(planKey) {
+            document.getElementById('calc-duration').value = planKey;
+            recalculateTotalCost();
+            document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
+            showToast('已為您將選取方案帶入計算器！');
+        }
+
+        function recalculateTotalCost() {
+            const planKey = document.getElementById('calc-duration').value;
+            const includeNutrition = document.getElementById('calc-nutrition').checked;
+            
+            let baseCost = 0;
+            let totalDays = 365;
+            let planName = '';
+
+            if (planKey === 'half_month') {
+                baseCost = 1280;
+                totalDays = 15;
+                planName = '包半個月體驗方案';
+            } else if (planKey === 'one_year') {
+                baseCost = 14400;
+                totalDays = 365;
+                planName = '包一年專業精英方案';
+            } else if (planKey === 'three_years') {
+                baseCost = 31680;
+                totalDays = 1095;
+                planName = '包三年極致尊榮方案';
+            }
+
+            const ptCost = state.ptCount * 1500;
+            
+            // Nutrition addon calculation
+            let nutritionCost = 0;
+            if (includeNutrition) {
+                // If it's half month, $400; for 1 year, free included; 3 years free included
+                if (planKey === 'half_month') {
+                    nutritionCost = 0; // standard includes 7 days, fully included promo
+                } else {
+                    nutritionCost = 0; // free promo included in membership
+                }
+            }
+
+            const grandTotal = baseCost + ptCost + nutritionCost;
+            const dailyCost = (grandTotal / totalDays).toFixed(1);
+
+            document.getElementById('summary-membership-cost').innerText = `NT$ ${baseCost.toLocaleString()}`;
+            document.getElementById('summary-nutrition-cost').innerText = includeNutrition ? '已包含 (FREE 試用)' : '未加購 ($0)';
+            document.getElementById('summary-pt-cost').innerText = `NT$ ${ptCost.toLocaleString()} (${state.ptCount}堂)`;
+            document.getElementById('summary-grand-total').innerText = `NT$ ${grandTotal.toLocaleString()}`;
+            document.getElementById('summary-daily-cost').innerText = `NT$ ${dailyCost}`;
+
+            // Save for modal
+            window.currentSelectedPlanSummary = `${planName} (總額: NT$${grandTotal.toLocaleString()})`;
+        }
+
+        // ITEM BONUS/DEMO: 3-Meal Nutrition Tracker Interactive Logic
+        function setMeal(type, name, cal, p, c, f) {
+            state.nutritionMeals[type] = { name, cal, p, c, f };
+            document.getElementById(`${type}-selected`).innerText = `已選擇：${name}`;
+            updateNutritionStats();
+        }
+
+        function updateNutritionStats() {
+            const m = state.nutritionMeals;
+            const totalCal = m.breakfast.cal + m.lunch.cal + m.dinner.cal;
+            const totalP = m.breakfast.p + m.lunch.p + m.dinner.p;
+            const totalC = m.breakfast.c + m.lunch.c + m.dinner.c;
+            const totalF = m.breakfast.f + m.lunch.f + m.dinner.f;
+
+            document.getElementById('nutrition-total-calories').innerText = totalCal.toLocaleString();
+            document.getElementById('macro-p-val').innerText = `${totalP}g`;
+            document.getElementById('macro-c-val').innerText = `${totalC}g`;
+            document.getElementById('macro-f-val').innerText = `${totalF}g`;
+
+            // Percentage bars (based on rough max targets 150g, 250g, 80g)
+            document.getElementById('macro-p-bar').style.width = Math.min(100, (totalP / 150) * 100) + '%';
+            document.getElementById('macro-c-bar').style.width = Math.min(100, (totalC / 250) * 100) + '%';
+            document.getElementById('macro-f-bar').style.width = Math.min(100, (totalF / 80) * 100) + '%';
+
+            // Dynamic Trainer Feedback Generator
+            const feedbackElem = document.getElementById('trainer-feedback-text');
+            if (totalCal > 2200) {
+                feedbackElem.innerHTML = `⚠️ <strong>營養師提醒：</strong> 今日總熱量偏高 (${totalCal} kcal)，主要來自高油脂外食。建議明天晚餐選擇清蒸蛋白質，並補充 500cc 水分！`;
+            } else if (totalP < 70) {
+                feedbackElem.innerHTML = `💡 <strong>蛋白質稍顯不足：</strong> 目前僅攝取 ${totalP}g 蛋白質。對於修復肌肉組織稍嫌不夠，建議點心可補充一杯高蛋白或無糖豆漿！`;
+            } else {
+                feedbackElem.innerHTML = `🌟 <strong>極佳的飲食控制：</strong> 全日熱量均衡 (${totalCal} kcal)，三大營養素比例極佳！繼續保持這個節奏，體態改變指日可待！`;
+            }
+        }
+
+        // Modal Controls
+        function triggerReservationModal() {
+            const modal = document.getElementById('reservation-modal');
+            document.getElementById('modal-selected-plan').value = window.currentSelectedPlanSummary || '包一年專業精英方案';
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('reservation-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function handleReservationSubmit(e) {
+            e.preventDefault();
+            closeModal();
+            showToast('已收到您的預約申請！教練將盡速透過電話與您聯繫。');
+        }
+
+        // On Load Initializations
+        window.onload = function() {
+            calculateBMI();
+            recalculateTotalCost();
+            updateNutritionStats();
+        };
+    </script>
+</body>
+</html>
